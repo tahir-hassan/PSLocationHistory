@@ -5,7 +5,7 @@ This module "replaces" the default `cd` command (`Set-Location`) in PowerShell. 
 * backwards and forwards navigation
 * ability to list recent locations and to select one to navigate to.
 
-# Installation
+## Installation
 
 ### Install from PowerShellGallery (preferred)
 
