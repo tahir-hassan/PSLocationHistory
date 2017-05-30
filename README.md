@@ -1,6 +1,6 @@
 # PSLocationHistory
 
-This module "replaces" the default `cd` command (`Set-Location`) in PowerShell.exe.  It provides:
+This module "replaces" the default `cd` command (`Set-Location`) in PowerShell.  It provides:
 
 * backwards and forwards navigation
 * ability to list recent locations and to select one to navigate to.
@@ -26,7 +26,7 @@ You can download the `PSLocationHistory` folder from this repository and copy it
 
 You have to run some commands, which you can put in your profile, that will enable the history features of this module.
 
-First, import the module.  This step may not be necessary as PowerShell increasing has `$PSModuleAutoLoadingPreference` set to `$true`:
+First, import the module. (This step may not be necessary as PowerShell now has `$PSModuleAutoLoadingPreference` set to `$true` by default)
 
 ```powershell
 Import-Module PSLocationHistory
