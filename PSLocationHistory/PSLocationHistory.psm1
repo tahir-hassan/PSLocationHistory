@@ -180,9 +180,9 @@ Function Disable-LocationHistory {
     $script:IsEnabled = $false;
 }
 
-Export-ModuleMember -Function Enable-*
-Export-ModuleMember -Function Disable-*
-Export-ModuleMember -Function Enter-*
-Export-ModuleMember -Function Set-*
+Export-ModuleMember -Function Enable-LocationHistory
+Export-ModuleMember -Function Disable-LocationHistory
+Export-ModuleMember -Function Enter-RecentLocation
+Export-ModuleMember -Function Set-LocationWithHistory
 Export-ModuleMember -Function Get-RecentLocation
 
