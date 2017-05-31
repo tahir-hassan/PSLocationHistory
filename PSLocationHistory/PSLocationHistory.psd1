@@ -14,7 +14,7 @@
 RootModule = 'PSLocationHistory.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.22'
+ModuleVersion = '1.23'
 
 # ID used to uniquely identify this module
 GUID = 'ee040c5e-525a-4bac-9615-be612f662f87'
@@ -26,10 +26,10 @@ Author = 'Tahir Hassan'
 CompanyName = 'Tahir Hassan'
 
 # Copyright statement for this module
-Copyright = '(c) 2017 Tahir Hassan. All rights reserved.'
+Copyright = '(c) 2017 Tahir Hassan. MIT License.'
 
 # Description of the functionality provided by this module
-Description = 'A module that provides location history.'
+Description = 'A module that provides location history.  It replaces the `cd` command to provide backwards and forwards navigation and ability to list and select a recently visited location.'
 
 # Minimum version of the Windows PowerShell engine required by this module
 # PowerShellVersion = ''
@@ -115,7 +115,7 @@ PrivateData = @{
 } # End of PrivateData hashtable
 
 # HelpInfo URI of this module
-# HelpInfoURI = ''
+HelpInfoURI = 'https://github.com/tahir-hassan/PSLocationHistory'
 
 # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
 # DefaultCommandPrefix = ''
