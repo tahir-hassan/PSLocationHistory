@@ -161,9 +161,10 @@ Function Enable-LocationHistory {
         Write-Host "LocationHistory is already enabled";
     } else {
 		$script:LocationHistory = [System.Collections.ArrayList]@();
+		$script:LocationHistory.Add((Get-Location).Path) | Out-Null;
 		$script:LocationHistoryPointer = 0;
-		$script:LocationHistory.Add((Get-Location).Path) | Out-Null
 		$script:RecentLocations = New-Object 'System.Collections.Generic.Dictionary[string,int]'
+		
         Rename-Item function:\prompt global:__prompt;
         Rename-Item function:\Set-LocationWithHistoryPrompt global:prompt;
         Set-Alias -Name __cd -Value (Get-Alias cd).Definition -Scope Global -Option AllScope;
@@ -179,10 +180,3 @@ Function Disable-LocationHistory {
     Get-Item Alias:\__cd | Remove-Item -Force
     $script:IsEnabled = $false;
 }
-
-Export-ModuleMember -Function Enable-LocationHistory
-Export-ModuleMember -Function Disable-LocationHistory
-Export-ModuleMember -Function Enter-RecentLocation
-Export-ModuleMember -Function Set-LocationWithHistory
-Export-ModuleMember -Function Get-RecentLocation
-
