@@ -29,7 +29,10 @@ CompanyName = 'Tahir Hassan'
 Copyright = '(c) 2017 Tahir Hassan. MIT License.'
 
 # Description of the functionality provided by this module
-Description = 'A module that provides location history.  It replaces the `cd` command to provide backwards and forwards navigation and ability to list and select a recently visited location.'
+Description = 'A module that provides location history.  It replaces the `cd` command to provide backwards and forwards navigation and ability to list and select a recently visited location.
+
+Check the GitHub repository https://github.com/tahir-hassan/PSLocationHistory for more information.
+'
 
 # Minimum version of the Windows PowerShell engine required by this module
 # PowerShellVersion = ''
@@ -102,7 +105,7 @@ PrivateData = @{
         # LicenseUri = ''
 
         # A URL to the main website for this project.
-        # ProjectUri = ''
+        ProjectUri = 'https://github.com/tahir-hassan/PSLocationHistory'
 
         # A URL to an icon representing this module.
         # IconUri = ''
@@ -115,7 +118,7 @@ PrivateData = @{
 } # End of PrivateData hashtable
 
 # HelpInfo URI of this module
-HelpInfoURI = 'https://github.com/tahir-hassan/PSLocationHistory'
+# HelpInfoURI = ''
 
 # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
 # DefaultCommandPrefix = ''
