@@ -1,10 +1,6 @@
 Set-StrictMode -Version Latest
 
 $script:IsEnabled = $false;
-$script:LocationHistory = [System.Collections.ArrayList]@();
-$script:LocationHistoryPointer = 0;
-$script:LocationHistory.Add((Get-Location).Path) | Out-Null
-$script:RecentLocations = New-Object 'System.Collections.Generic.Dictionary[string,int]'
 
 Function DirectoryIsNonTrivial {
 	param([string]$Path) 
@@ -164,6 +160,10 @@ Function Enable-LocationHistory {
     if ($script:IsEnabled) {
         Write-Host "LocationHistory is already enabled";
     } else {
+		$script:LocationHistory = [System.Collections.ArrayList]@();
+		$script:LocationHistoryPointer = 0;
+		$script:LocationHistory.Add((Get-Location).Path) | Out-Null
+		$script:RecentLocations = New-Object 'System.Collections.Generic.Dictionary[string,int]'
         Rename-Item function:\prompt global:__prompt;
         Rename-Item function:\Set-LocationWithHistoryPrompt global:prompt;
         Set-Alias -Name __cd -Value (Get-Alias cd).Definition -Scope Global -Option AllScope;
