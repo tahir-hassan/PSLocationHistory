@@ -40,7 +40,7 @@ Function Enter-RecentLocation {
             @($script:RecentLocations.Keys | 
             sort { $script:RecentLocations[$_] } -Descending | 
             Select -First ($DATA_SIZE + 1) | 
-            ? { $_ -ne (Get-Location).Path } | 
+            ? { $_ -ne (Get-Location).ProviderPath } | 
             Select -First $DATA_SIZE);
 		
 	if (-not $data) {
@@ -132,7 +132,7 @@ Function Set-LocationWithHistory {
         # later implement [switch][Alias("fl")]$FrequentLocation 
 	)
 
-	$currentPath = (Get-Location).Path; 
+	$currentPath = (Get-Location).ProviderPath; 
 	
 	if ($Path) {
 		if (-not (Test-Path $Path)) {
@@ -140,7 +140,7 @@ Function Set-LocationWithHistory {
 		} else {
 			Set-Location $Path
 
-            Add-LocationToHistoryStack (Get-Location).Path;
+            Add-LocationToHistoryStack (Get-Location).ProviderPath;
 		}
 	} elseif ($Back) {
 		Go-Back
@@ -152,7 +152,7 @@ Function Set-LocationWithHistory {
 }
 
 Function Set-LocationWithHistoryPrompt() {    
-    Update-RecentLocation (Get-Location).Path;
+    Update-RecentLocation (Get-Location).ProviderPath;
     __prompt;
 }
 
@@ -161,7 +161,7 @@ Function Enable-LocationHistory {
         Write-Host "LocationHistory is already enabled";
     } else {
 		$script:LocationHistory = [System.Collections.ArrayList]@();
-		$script:LocationHistory.Add((Get-Location).Path) | Out-Null;
+		$script:LocationHistory.Add((Get-Location).ProviderPath) | Out-Null;
 		$script:LocationHistoryPointer = 0;
 		$script:RecentLocations = New-Object 'System.Collections.Generic.Dictionary[string,int]'
 		
