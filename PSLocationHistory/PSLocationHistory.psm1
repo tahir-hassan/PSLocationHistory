@@ -126,14 +126,24 @@ Function Set-LocationWithHistory {
 	[OutputType()] 
 	param (
 		[string]$Path,
+        [string]$Path0,
+        [string]$Path1,
+        [string]$Path2,
+        [string]$Path3,
+        [string]$Path4,
+        [string]$Path5,
+        [string]$Path6,
+        [string]$Path7,
+        [string]$Path8,
+        [string]$Path9,
 		[switch][Alias("b")]$Back,
 		[switch][Alias("f")]$Forward,
 		[switch][Alias("rl")]$RecentLocation 
         # later implement [switch][Alias("fl")]$FrequentLocation 
 	)
 
-	$currentPath = (Get-Location).ProviderPath; 
-	
+    $Path = ($Path, $Path0, $Path1, $Path2, $Path3, $Path4, $Path5, $Path6, $Path7, $Path8, $Path9 | ? { -not [string]::IsNullOrWhiteSpace($_) }) -join " ";
+
 	if ($Path) {
 		if (-not (Test-Path $Path)) {
 			"'$Path' does not exist", "" | Write-Host  -ForegroundColor Red
