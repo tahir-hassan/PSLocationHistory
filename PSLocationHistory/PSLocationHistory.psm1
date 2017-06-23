@@ -2,6 +2,9 @@ Set-StrictMode -Version Latest
 
 $script:IsEnabled = $false;
 
+# Event Handler lists
+$script:LocationChangedEventHandlers = @();
+
 Function DirectoryIsNonTrivial {
 	param([string]$Path) 
 	
@@ -93,7 +96,7 @@ Function Enter-RecentLocation {
 		    }
 
             if ($selection -is [int]) {
-			    Set-LocationWithHistory ($indexedData | ? { $_.Index -eq $selection }).Path
+			    Set-LocationWithHistory ($indexedData | Where-Object { $_.Index -eq $selection }).Path
                 return;
 		    } elseif ($inputStr) {
                 Write-Host "Invalid selection" -ForegroundColor Red;
@@ -149,8 +152,10 @@ Function Set-LocationWithHistory {
 			"'$Path' does not exist", "" | Write-Host  -ForegroundColor Red
 		} else {
 			Set-Location $Path
-
-            Add-LocationToHistoryStack (Get-Location).ProviderPath;
+            $newLocation = (Get-Location).ProviderPath;
+            
+            Add-LocationToHistoryStack $newLocation;
+            $script:LocationChangedEventHandlers | ForEach-Object { & $_ $newLocation; }
 		}
 	} elseif ($Back) {
 		Go-Back
@@ -190,3 +195,60 @@ Function Disable-LocationHistory {
     Get-Item Alias:\__cd | Remove-Item -Force
     $script:IsEnabled = $false;
 }
+
+# following this naming convention
+# https://stackoverflow.com/a/980364/288393
+# https://en.oxforddictionaries.com/spelling/verb-tenses-adding-ed-and-ing
+# <EventName> ::= <NounPhrase><VerbForm> 
+# <VerbForm> ::= <VerbPresentParticle> | <VerbPastTense>
+Add-PSLocationHistoryEventHandler {
+    param($LocationChanged)
+
+    if ($LocationChanged) {
+        if ($LocationChanged -is [scriptblock]) {
+            # handle scriptblocks for now
+            $script:LocationChangedEventHandlers.Add($LocationChanged)
+        }
+    }
+}
+
+# Function Set-PSLocationHistoryOption {
+#    param([bool]$ShowChildren)
+# }
+
+<#
+Function ShortenLongString {
+    param([string]$Str, [int]$MaxLength)
+
+    if ($Str -le $MaxLength) { return $Str; }
+
+    $splitPos = 10;
+
+    return $Str.Substring(0, $MaxLength - $splitPos - 3) + "..." + $Str.Substring($Str.Length - $splitPos, $splitPos);
+}
+
+$terms = Get-ChildItem | ForEach-Object Name
+
+$minColumnWidth = ($terms | % Length | measure -Maximum).Maximum  + 2
+$numColumns = [Math]::Max(1, [int][Math]::Floor( [Console]::BufferWidth / $minColumnWidth))
+
+if ($numColumns -eq 1) {
+    $terms | % { ShortenLongString $_ } | Write-Host
+} else {
+    $numRows = ( $terms.Length + $numColumns - 1 ) / $numColumns;
+
+    $colSize = [int][Math]::Floor([Console]::BufferWidth / $numColumns);
+    
+    (0..($numRows - 1)) | % {
+        $rowNum = $_;
+
+        $start = $rowNum * $numColumns;
+        $end = $start + $numColumns - 1;
+
+        $lineTerms = $terms[$start..$end]; 
+        $printableTerms = $lineTerms | % { $_.PadRight($colSize, ' ') }
+        Write-Host ($printableTerms -join '')
+    }
+}
+
+#>
