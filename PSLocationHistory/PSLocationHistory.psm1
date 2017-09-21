@@ -3,7 +3,7 @@ Set-StrictMode -Version Latest
 $script:IsEnabled = $false;
 
 # Event Handler lists
-$script:LocationChangedEventHandlers = @();
+$script:LocationChangedEventHandlers = New-Object System.Collections.ArrayList
 
 Function DirectoryIsNonTrivial {
 	param([string]$Path) 
@@ -201,7 +201,7 @@ Function Disable-LocationHistory {
 # https://en.oxforddictionaries.com/spelling/verb-tenses-adding-ed-and-ing
 # <EventName> ::= <NounPhrase><VerbForm> 
 # <VerbForm> ::= <VerbPresentParticle> | <VerbPastTense>
-Add-PSLocationHistoryEventHandler {
+Function Add-PSLocationHistoryEventHandler {
     param($LocationChanged)
 
     if ($LocationChanged) {

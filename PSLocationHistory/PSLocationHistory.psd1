@@ -5,6 +5,8 @@
 #
 # Generated on: 30/05/2017
 #
+# To push to PSGallery, do:
+# Publish-Module -Name PSLocationHistory -NuGetApiKey '********-****-****-****-************'
 
 @{
 
@@ -14,7 +16,7 @@
 RootModule = 'PSLocationHistory.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.26'
+ModuleVersion = '1.27'
 
 # ID used to uniquely identify this module
 GUID = 'ee040c5e-525a-4bac-9615-be612f662f87'
@@ -71,7 +73,7 @@ Check the GitHub repository https://github.com/tahir-hassan/PSLocationHistory fo
 # NestedModules = @()
 
 # Functions to export from this module
-FunctionsToExport = 'Enable-LocationHistory','Disable-LocationHistory','Enter-RecentLocation','Set-LocationWithHistory','Get-RecentLocation'
+FunctionsToExport = 'Enable-LocationHistory','Disable-LocationHistory','Enter-RecentLocation','Set-LocationWithHistory','Get-RecentLocation', 'Add-PSLocationHistoryEventHandler'
 
 # Cmdlets to export from this module
 CmdletsToExport = '*'
