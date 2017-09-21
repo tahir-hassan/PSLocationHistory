@@ -207,48 +207,51 @@ Function Add-PSLocationHistoryEventHandler {
     if ($LocationChanged) {
         if ($LocationChanged -is [scriptblock]) {
             # handle scriptblocks for now
-            $script:LocationChangedEventHandlers.Add($LocationChanged)
+            $script:LocationChangedEventHandlers.Add($LocationChanged) | Out-Null
         }
     }
 }
 
-# Function Set-PSLocationHistoryOption {
-#    param([bool]$ShowChildren)
-# }
-
 <#
-Function ShortenLongString {
-    param([string]$Str, [int]$MaxLength)
-
-    if ($Str -le $MaxLength) { return $Str; }
-
-    $splitPos = 10;
-
-    return $Str.Substring(0, $MaxLength - $splitPos - 3) + "..." + $Str.Substring($Str.Length - $splitPos, $splitPos);
-}
-
-$terms = Get-ChildItem | ForEach-Object Name
-
-$minColumnWidth = ($terms | % Length | measure -Maximum).Maximum  + 2
-$numColumns = [Math]::Max(1, [int][Math]::Floor( [Console]::BufferWidth / $minColumnWidth))
-
-if ($numColumns -eq 1) {
-    $terms | % { ShortenLongString $_ } | Write-Host
-} else {
-    $numRows = ( $terms.Length + $numColumns - 1 ) / $numColumns;
-
-    $colSize = [int][Math]::Floor([Console]::BufferWidth / $numColumns);
+Function ChangeDirEventHandler_ListItems {
+    Param([string]$Path)
     
-    (0..($numRows - 1)) | % {
-        $rowNum = $_;
+    Function ShortenLongString {
+        param([string]$Str, [int]$MaxLength)
 
-        $start = $rowNum * $numColumns;
-        $end = $start + $numColumns - 1;
+        if ($Str -le $MaxLength) { return $Str; }
 
-        $lineTerms = $terms[$start..$end]; 
-        $printableTerms = $lineTerms | % { $_.PadRight($colSize, ' ') }
-        Write-Host ($printableTerms -join '')
+        $splitPos = 10;
+
+        return $Str.Substring(0, $MaxLength - $splitPos - 3) + "..." + $Str.Substring($Str.Length - $splitPos, $splitPos);
+    }
+
+    $terms = @(Get-ChildItem $Path | Foreach-Object { if ($_.PSIsContainer) { $_.Name + "\" } else { $_.Name } })
+    
+    if ($terms) {
+        $columnWidth = ($terms | % Length | measure -Maximum).Maximum  + 2;
+        $bufferWidth = [Console]::BufferWidth;
+        $numColumns = [Math]::Max(1, [int][Math]::Floor( $bufferWidth / $columnWidth))
+
+        if ($numColumns -eq 1) {
+            $terms | % { ShortenLongString $_ $bufferWidth } | Write-Host
+        } else {
+            $numRows = ( $terms.Length + $numColumns - 1 ) / $numColumns;
+
+            (0..($numRows - 1)) | % {
+                $rowNum = $_;
+
+                $start = $rowNum * $numColumns;
+                $end = $start + $numColumns - 1;
+
+                $lineTerms = $terms[$start..$end]; 
+                $printableTerms = $lineTerms | % { $_.PadRight($columnWidth, ' ') }
+                Write-Host ($printableTerms -join '')
+            }
+        }
     }
 }
+
+Add-PSLocationHistoryEventHandler -LocationChanged { param($x) ChangeDirEventHandler_ListItems $x }
 
 #>

@@ -16,7 +16,7 @@
 RootModule = 'PSLocationHistory.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.27'
+ModuleVersion = '1.29'
 
 # ID used to uniquely identify this module
 GUID = 'ee040c5e-525a-4bac-9615-be612f662f87'
