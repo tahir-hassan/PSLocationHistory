@@ -213,7 +213,6 @@ Function Add-PSLocationHistoryEventHandler {
 }
 
 <#
-
 Function ChangeDirEventHandler_ListItems {
     Param([string]$Path)
     
@@ -247,15 +246,7 @@ Function ChangeDirEventHandler_ListItems {
 
                 $lineTerms = $terms[$start..$end]; 
                 $printableTerms = $lineTerms | % { $_.PadRight($columnWidth, ' ') }
-                $line = $printableTerms -join '';
-                
-                Write-Host (& {
-                    if (($line.Length -eq $bufferWidth) -and ($line.EndsWith(" "))) {
-                        $line.Substring(0, $line.Length - 1);
-                    } else {
-                        $line;
-                    }
-                })
+                Write-Host ($printableTerms -join '')
             }
         }
     }
